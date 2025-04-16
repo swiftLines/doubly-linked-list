@@ -317,13 +317,30 @@ class TwoWayLinkedList<E> implements MyList<E> {
 
   /** Add an element to the beginning of the list */
   public void addFirst(E e) {    
-  
-
+    Node<E> newNode = new Node<>(e);
+    newNode.next = head;
+    if (head != null) {
+      head.previous = newNode;
+    }
+    head = newNode;
+    if (tail == null) {
+      tail = newNode;
+    }
+    size++;
   }
 
   /** Add an element to the end of the list */
   public void addLast(E e) {
-    
+    Node<E> newNode = new Node<>(e);
+    newNode.previous = tail;
+    if (tail != null) {
+      tail.next = newNode;
+    }
+    tail = newNode;
+    if (head == null) {
+      head = newNode;
+    }
+    size++;
   }
 
   /**
