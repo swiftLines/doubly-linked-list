@@ -354,16 +354,18 @@ class TwoWayLinkedList<E> implements MyList<E> {
       addLast(e);
     } else {
       Node<E> current = head;
-      for (int i = 1; i < index; i++) {
+      for (int i = 0; i < index; i++) {
         current = current.next;
       }
 
       Node<E> newNode = new Node<>(e);
-      Node<E> after = current.next;
-      newNode.next = after;
-      newNode.previous = current;
-      after.previous = newNode;
-      current.next = newNode;
+      Node<E> before = current.previous;
+
+      newNode.next = current;
+      newNode.previous = before;
+
+      before.next = newNode;
+      current.previous = newNode;
       
       size++;
     }
@@ -374,7 +376,19 @@ class TwoWayLinkedList<E> implements MyList<E> {
    * removed node.
    */
   public E removeFirst() {
-  
+    if (size == 0) {
+      return null;
+    } else {
+      E temp = head.element;
+      head = head.next;
+      if (head == null){
+        tail = null;
+      } else {
+        head.previous = null;
+      }
+      size--;
+      return temp;
+    }
   }
 
   /**
@@ -382,7 +396,18 @@ class TwoWayLinkedList<E> implements MyList<E> {
    * removed node.
    */
   public E removeLast() {
-  
+    if (size == 0) {
+      return null;
+    }
+    E temp = tail.element;
+    if (size == 1) {
+      head = tail = null;
+    } else {
+      tail = tail.previous;
+      tail.next = null;
+      size--;
+    }
+    return temp;
   }
 
   /**
@@ -390,6 +415,25 @@ class TwoWayLinkedList<E> implements MyList<E> {
    * element that was removed from the list.
    */
   public E remove(int index) {
-  
+    if (index < 0 || index >= size) {
+      return null;
+    }
+    else if (index == 0) {
+      return removeFirst();
+    }
+    else if (index == size - 1) {
+      return removeLast();
+    }
+    else {
+      Node<E> current = head;
+      for (int i = 0; i < index; i++) {
+        current = current.next;
+      }
+
+      current.previous.next = current.next;
+      current.next.previous = current.previous;
+      size--;
+      return current.element;
+    }
   }
 }
