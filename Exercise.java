@@ -348,7 +348,25 @@ class TwoWayLinkedList<E> implements MyList<E> {
    * head element is 0
    */
   public void add(int index, E e) {
-    
+    if (index == 0) {
+      addFirst(e);
+    } else if (index >= size) {
+      addLast(e);
+    } else {
+      Node<E> current = head;
+      for (int i = 1; i < index; i++) {
+        current = current.next;
+      }
+
+      Node<E> newNode = new Node<>(e);
+      Node<E> after = current.next;
+      newNode.next = after;
+      newNode.previous = current;
+      after.previous = newNode;
+      current.next = newNode;
+      
+      size++;
+    }
   }
 
   /**
